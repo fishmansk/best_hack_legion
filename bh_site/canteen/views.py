@@ -14,6 +14,8 @@ def test_view(request):
         for canteen in canteens:
             #if user.has_perm('edit_canteen', canteen):
             print(user, canteen, user.has_perm('edit_canteen', canteen))
+    categories = CategoryModel.objects.get(name="Супы")
+    print("C: ", categories.image)
     print(users)
     print(canteens)
     return HttpResponseRedirect("/index")
