@@ -4,6 +4,7 @@ from django.db import models
 
 class CanteenModel(models.Model):
     name = models.CharField(max_length=30, verbose_name="Название столовой")
+    description = models.TextField(max_length=100, verbose_name="описание", default="")
 
     def __str__(self):
         return self.name
@@ -32,7 +33,6 @@ class CategoryModel(models.Model):
 class DishModel(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название блюда")
     category = models.ForeignKey(CategoryModel, on_delete=False, verbose_name="категория", null=True)
-    canteen = models.ForeignKey(CanteenModel, on_delete=False, verbose_name="столовая", null=True)
     calories = models.IntegerField(verbose_name="калории")
     proteins = models.IntegerField(verbose_name="белки")
     fats = models.IntegerField(verbose_name="жиры")
@@ -41,6 +41,7 @@ class DishModel(models.Model):
     mass = models.IntegerField(verbose_name="вес")
     description = models.TextField(max_length=100, verbose_name="описание")
     image = models.ImageField(null=True,upload_to="media/", verbose_name="картинка")
+
 
     def __str__(self):
         return self.name
