@@ -8,17 +8,27 @@ from django.contrib.auth.models import User
 
 
 def test_view(request):
-    users = User.objects.all()
-    canteens = CanteenModel.objects.all()
-    for user in users:
+    if request.user.is_authenticated:
+        username = request.user
+
+        user = User.objects.get(username=username)
+        canteens = CanteenModel.objects.all()
+
+        manage_canteens = []
         for canteen in canteens:
-            #if user.has_perm('edit_canteen', canteen):
-            print(user, canteen, user.has_perm('edit_canteen', canteen))
-    categories = CategoryModel.objects.get(name="Супы")
-    print("C: ", categories.image)
-    print(users)
-    print(canteens)
-    return HttpResponseRedirect("/index")
+            if user.has_perm("manage_canteen", canteen):
+                manage_canteens.append(canteen.pk)
+
+        response = {
+            "canteens_manage_id": manage_canteens,
+        }
+
+        return JsonResponse(response)
+    else:
+        return HttpResponse("Not autenticated")
+
+
+
 
 
 def index_view(request):

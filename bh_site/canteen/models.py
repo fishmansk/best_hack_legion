@@ -12,7 +12,7 @@ class CanteenModel(models.Model):
         verbose_name = "Столовая"
         verbose_name_plural = "Столовые"
         permissions = (
-            ('edit_canteen', "Edit Canteen"),
+            ('manage_canteen', "Manage Canteen"),
         )
 
 
