@@ -19,7 +19,7 @@ class CanteenModel(models.Model):
 class CategoryModel(models.Model):
     name = models.CharField(max_length=100, verbose_name="название катогории")
     canteen = models.ForeignKey(CanteenModel, on_delete=False, verbose_name="столовая")
-    image = models.ImageField(null=True,upload_to="media/", verbose_name="картинка")
+    image = models.ImageField(null=True, verbose_name="картинка")
 
     def __str__(self):
         return self.name
@@ -40,7 +40,7 @@ class DishModel(models.Model):
     price = models.IntegerField(verbose_name="цена")
     mass = models.IntegerField(verbose_name="вес")
     description = models.TextField(max_length=100, verbose_name="описание")
-    image = models.ImageField(null=True,upload_to="media/", verbose_name="картинка")
+    image = models.ImageField(null=True, verbose_name="картинка")
 
     def __str__(self):
         return self.name
