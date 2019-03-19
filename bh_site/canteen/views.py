@@ -7,7 +7,7 @@ import uuid
 from django.conf import settings
 import os
 import json
-
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -33,8 +33,13 @@ def test_view(request):
     else:
         return HttpResponse("Not authenticated")
 
-
+@csrf_exempt
 def GET_Canteens_View(request):
+    """
+
+    :param request:
+    :return:
+    """
     #time =
 
     canteens = CanteenModel.objects.all()
@@ -47,8 +52,21 @@ def GET_Canteens_View(request):
     response={"canteens":canteen_info}
     return JsonResponse(response)
 
+
+@csrf_exempt
 def GET_Categories_View(request):
-    canteen_id=1
+    """
+    Example of request:
+    {
+        "canteen_id": "3"
+    }
+    :param request:
+    :return:
+    """
+    data = request.body.decode()
+    data = json.loads(data)
+    print(data)
+    canteen_id=data["canteen_id"]
     #canteen_id = request.category_id
     categories = CategoryModel.objects.filter(canteen=canteen_id)
     category_info = []
@@ -60,9 +78,22 @@ def GET_Categories_View(request):
                             "num_dishes":len(dishes)})
 
     response = {"categories":category_info}
+    # print()
     return JsonResponse(response)
 
+@csrf_exempt
 def POST_Category_View(request):
+    """
+    Example of api request:
+    {
+        "name":"гарнир",
+        "canteen":1,
+        "image":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAADZJREFUCJlj/P///38GPICFgYGBgZGREavk////IQpgRvhCGVvUEYYy4TMeYQWMh8GAWYHHnQAAhA802d3H5gAAAABJRU5ErkJggg==",
+        "image_name": "keklol.png"
+    }
+    :param request:
+    :return:
+    """
     Add_Category = {
         "name":"гарнир",
         "canteen":1,
@@ -70,10 +101,8 @@ def POST_Category_View(request):
         "image_name": "keklol.png",
     }
     data = request.body.decode()
-    # print('RECEIVED STRING: ', data)
     data = json.loads(data)
     Add_Category = data
-    # print(data)
 
     image = Add_Category["image"].split(',')[1]
     image_64_decode = base64.b64decode(image)
@@ -90,7 +119,22 @@ def POST_Category_View(request):
     Add_Category['id']=category.pk
     return JsonResponse(Add_Category)
 
+
+@csrf_exempt
 def PATCH_Category_View(request):
+
+    """
+    Example of api request:
+    {
+        "name": "Новый гарнир1",
+        "canteen": 1,
+        "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAADZJREFUCJlj/P///38GPICFgYGBgZGREavk////IQpgRvhCGVvUEYYy4TMeYQWMh8GAWYHHnQAAhA802d3H5gAAAABJRU5ErkJggg==",
+        "image_name": "keklol.png",
+        "id": 33
+    }
+    :param request:
+    :return:
+    """
     Add_Category = {
         "id":"20",
         "name":"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPP",
@@ -120,14 +164,14 @@ def PATCH_Category_View(request):
     category.save()
     return JsonResponse(Add_Category)
 
-
+@csrf_exempt
 def DELETE_Category_View(request):
     Delete_Category={'id': 22}
     CategoryModel.objects.filter(id=Delete_Category['id']).delete()
     return JsonResponse({"all":"right"})
 
 
-
+@csrf_exempt
 def GET_Dishes_View(request):
     category_id=5
     dishes = DishModel.objects.filter(category=category_id)
@@ -148,7 +192,7 @@ def GET_Dishes_View(request):
     response = {"dishes":dishes_info}
     return JsonResponse(response)
 
-
+@csrf_exempt
 def POST_Dish_View(request):
     Add_Dish = {
         "name":"dadadaddff",
@@ -188,7 +232,7 @@ def POST_Dish_View(request):
     return JsonResponse(Add_Dish)
 
 
-
+@csrf_exempt
 def PATCH_Dish_View(request):
     Add_Dish = {
         "id":29,
@@ -233,7 +277,7 @@ def PATCH_Dish_View(request):
     Dish.save()
     return JsonResponse(Add_Dish)
 
-
+@csrf_exempt
 def DELETE_Dish_View(request):
     Delete_Dish={'id': 29}
     DishModel.objects.filter(id=Delete_Dish['id']).delete()
@@ -243,4 +287,5 @@ def DELETE_Dish_View(request):
 
 def index_view(request):
     html = render(request, "canteen/index.html", {})
+    print(html.content)
     return HttpResponse(html)
