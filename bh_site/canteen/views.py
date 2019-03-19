@@ -70,10 +70,8 @@ def POST_Category_View(request):
         "image_name": "keklol.png",
     }
     data = request.body.decode()
-    # print('RECEIVED STRING: ', data)
     data = json.loads(data)
     Add_Category = data
-    # print(data)
 
     image = Add_Category["image"].split(',')[1]
     image_64_decode = base64.b64decode(image)
@@ -84,7 +82,7 @@ def POST_Category_View(request):
     # image_result = open('media/category_'+str(category.)+'.png', 'wb')
     file = open(path, 'wb')
     file.write(image_64_decode)
-    category = CategoryModel(name="гранир", canteen_id=1, image=str(filename))
+    category = CategoryModel(name=Add_Category['name'], canteen_id=Add_Category['canteen'], image=str(filename))
     # image_result.write(image_64_decode)
     category.save()
     Add_Category['id']=category.pk
@@ -92,7 +90,7 @@ def POST_Category_View(request):
 
 def PATCH_Category_View(request):
     Add_Category = {
-        "id":"20",
+        "id":"44",
         "name":"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPP",
         "canteen":1,
         "image":'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAADZJREFUCJlj/P///38GPICFgYGBgZGREavk////IQpgRvhCGVvUEYYy4TMeYQWMh8GAWYHHnQAAhA802d3H5gAAAABJRU5ErkJggg==',
@@ -161,9 +159,15 @@ def POST_Dish_View(request):
         "price":20,
         "mass":20,
         "description":"dadada",
-        "image_name": "ada.png",
-
+        "image_name": "ada.png"
     }
+
+
+
+    data = request.body.decode()
+    data = json.loads(data)
+    Add_Dish = data
+
     image = Add_Dish["image"].split(',')[1]
     image_64_decode = base64.b64decode(image)
     media_root = settings.MEDIA_ROOT
@@ -173,15 +177,17 @@ def POST_Dish_View(request):
     # image_result = open('media/category_'+str(category.)+'.png', 'wb')
     file = open(path, 'wb')
     file.write(image_64_decode)
-    Dish = DishModel(name=Add_Dish['name'], category_id=Add_Dish['category'],
-                             image=str(filename),proteins=Add_Dish["proteins"],
-                             calories=Add_Dish['calories'],
-                             fats=Add_Dish['fats'],
-                             carbohydrates=Add_Dish['carbohydrates'],
-                             price=Add_Dish['price'],
-                             mass=Add_Dish['mass'],
-                             description=Add_Dish['description'],
-                             )
+    Dish = DishModel(name=Add_Dish['name'],
+                     category_id=Add_Dish['category'],
+                     image=str(filename),
+                     proteins=Add_Dish["proteins"],
+                     calories=Add_Dish['calories'],
+                     fats=Add_Dish['fats'],
+                     carbohydrates=Add_Dish['carbohydrates'],
+                     price=Add_Dish['price'],
+                     mass=Add_Dish['mass'],
+                     description=Add_Dish['description'],
+                     )
     # image_result.write(image_64_decode)
     Dish.save()
     Add_Dish['id']=Dish.pk
@@ -202,9 +208,13 @@ def PATCH_Dish_View(request):
         "price":20,
         "mass":20,
         "description":"dadada",
-        "image_name": "ada.png",
-
+        "image_name": "ada.png"
     }
+
+    data = request.body.decode()
+    data = json.loads(data)
+    Add_Dish = data
+
     image = Add_Dish["image"].split(',')[1]
     image_64_decode = base64.b64decode(image)
     media_root = settings.MEDIA_ROOT
