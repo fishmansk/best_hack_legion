@@ -6,6 +6,7 @@ import base64
 import uuid
 from django.conf import settings
 import os
+import json
 
 
 # Create your views here.
@@ -67,8 +68,13 @@ def POST_Category_View(request):
         "canteen":1,
         "image":'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAADZJREFUCJlj/P///38GPICFgYGBgZGREavk////IQpgRvhCGVvUEYYy4TMeYQWMh8GAWYHHnQAAhA802d3H5gAAAABJRU5ErkJggg==',
         "image_name": "keklol.png",
-
     }
+    data = request.body.decode()
+    # print('RECEIVED STRING: ', data)
+    data = json.loads(data)
+    Add_Category = data
+    # print(data)
+
     image = Add_Category["image"].split(',')[1]
     image_64_decode = base64.b64decode(image)
     media_root = settings.MEDIA_ROOT
@@ -81,7 +87,8 @@ def POST_Category_View(request):
     category = CategoryModel(name="гранир", canteen_id=1, image=str(filename))
     # image_result.write(image_64_decode)
     category.save()
-    return JsonResponse({"all":"right"})
+    Add_Category['id']=category.pk
+    return JsonResponse(Add_Category)
 
 def PATCH_Category_View(request):
     Add_Category = {
@@ -91,6 +98,10 @@ def PATCH_Category_View(request):
         "image":'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAADZJREFUCJlj/P///38GPICFgYGBgZGREavk////IQpgRvhCGVvUEYYy4TMeYQWMh8GAWYHHnQAAhA802d3H5gAAAABJRU5ErkJggg==',
         "image_name":"keklllke.png",
     }
+
+    data = request.body.decode()
+    data = json.loads(data)
+    Add_Category = data
 
     image = Add_Category["image"].split(',')[1]
     image_64_decode = base64.b64decode(image)
@@ -107,7 +118,7 @@ def PATCH_Category_View(request):
     category.image = filename
 
     category.save()
-    return JsonResponse({"all":"right"})
+    return JsonResponse(Add_Category)
 
 
 def DELETE_Category_View(request):
@@ -173,7 +184,8 @@ def POST_Dish_View(request):
                              )
     # image_result.write(image_64_decode)
     Dish.save()
-    return JsonResponse({"all":"right"})
+    Add_Dish['id']=Dish.pk
+    return JsonResponse(Add_Dish)
 
 
 
@@ -219,7 +231,7 @@ def PATCH_Dish_View(request):
 
     # image_result.write(image_64_decode)
     Dish.save()
-    return JsonResponse({"all":"right"})
+    return JsonResponse(Add_Dish)
 
 
 def DELETE_Dish_View(request):
