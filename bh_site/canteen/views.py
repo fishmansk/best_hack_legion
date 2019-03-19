@@ -12,7 +12,7 @@ import json
 # Create your views here.
 
 
-def test_view(request):
+def GET_Manage_Canteens_Id_View(request):
     if request.user.is_authenticated:
 
         username = request.user
@@ -120,7 +120,11 @@ def PATCH_Category_View(request):
 
 
 def DELETE_Category_View(request):
-    Delete_Category={'id': 22}
+
+    data = request.body.decode()
+    data = json.loads(data)
+    Delete_Category = data
+    #Delete_Category={'id': 22}
     CategoryModel.objects.filter(id=Delete_Category['id']).delete()
     return JsonResponse({"all":"right"})
 
@@ -245,7 +249,10 @@ def PATCH_Dish_View(request):
 
 
 def DELETE_Dish_View(request):
-    Delete_Dish={'id': 29}
+    data = request.body.decode()
+    data = json.loads(data)
+    Delete_Dish = data
+    #Delete_Dish={'id': 29}
     DishModel.objects.filter(id=Delete_Dish['id']).delete()
     return JsonResponse({"all":"right"})
 
