@@ -102,8 +102,10 @@ Vue.component('main-app', {
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title> {{ canteen.name }}</v-list-tile-title>
+              
             </v-list-tile-content>
           </v-list-tile>
+          <v-card-text style="background-color:#00000011; margin-left: 10px;">{{ canteen.description }}</v-card-text>
         </div>
         
 
