@@ -143,27 +143,11 @@ Vue.component('add-category-dialog', {
             this.$refs.image_upload_field.imageFile = "";
             this.$refs.image_upload_field.imageUrl = "";
         },
-        // update_category: function(){
-        //     var self = this;
-        //     etch("http://127.0.0.1:8000/patch_categories/", {
-        //         method: "DELETE",
-        //         body: JSON.stringify({
-        //             id: this.id,
-        //         })
-        //     }).then(function (r){               
-
-        //         return r.json()
-        //     }).then(function(json){
-        //         if (r.status == 200){
-        //             self.$emit("on_update_category", json)
-        //             self.close_add_category_dialog();
-        //         }
-        //     })
-        // },
+       
         delete_category: function (){
             // alert(this.id)
             var self = this;
-            fetch("http://127.0.0.1:8000/delete_categories/", {
+            fetch(base_url+"/delete_categories/", {
                 method: "DELETE",
                 body: JSON.stringify({
                     id: this.id,
@@ -190,7 +174,7 @@ Vue.component('add-category-dialog', {
                 }
                 body = JSON.stringify(data)
                 var self = this
-                fetch('http://127.0.0.1:8000/post_categories/', {
+                fetch(base_url+'/post_categories/', {
                     body:body,
                     method: "POST",
                 }).then(function(response){
@@ -218,7 +202,7 @@ Vue.component('add-category-dialog', {
                 }
                 body = JSON.stringify(data)
                 var self = this
-                fetch('http://127.0.0.1:8000/patch_categories/', {
+                fetch(base_url+'/patch_categories/', {
                     body:body,
                     method: "POST",
                 }).then(function(response){
@@ -268,7 +252,7 @@ Vue.component('category-block', {
                         <v-flex xs4 md2 flexbox>
                             <v-layout row justify-end>
                                 <add-category-dialog 
-                                rest_url="http://127.0.0.1:8000/add_category/"
+                                :rest_url="base_url+'/add_category/'"
                                 dialog_title="Изменить категорию"
                                 rest_method="PATCH"
                                 :new="false"
@@ -340,7 +324,7 @@ Vue.component('product-block', {
                             <v-layout column justify-end>
                                 <v-flex> 
                                 <add-category-dialog 
-                                rest_url="http://127.0.0.1:8000/add_category/"
+                                :rest_url="base_url+'/add_category/'"
                                 dialog_title="Изменить категорию"
                                 rest_method="PATCH"
                                 :new="false"
@@ -392,7 +376,7 @@ Vue.component('admin-app', {
 
 
                     <add-category-dialog
-                    rest_url="http://127.0.0.1:8000/add_category/"
+                    :rest_url="base_url+'/add_category/'"
                     dialog_title="Добавить категорию"
                     rest_method="POST"
                     :new="true"
@@ -482,7 +466,7 @@ Vue.component('admin-app', {
     data: function (){
         return {
         // is_add_new_category_dialog: false,
-        base_url: "http://127.0.0.1:8000",
+        base_url: base_url,
         categories: [
         ],
         dishes: [

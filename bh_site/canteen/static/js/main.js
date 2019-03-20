@@ -96,7 +96,7 @@ Vue.component('main-app', {
         <v-divider></v-divider>
         <div class="" style="height:20px"></div>
         <div v-for="canteen in canteens">
-          <v-list-tile @click="change_canteen_id(canteen.id)">
+          <v-list-tile @click="change_canteen_id(canteen.id); go_to('/menu');">
             <v-list-tile-action>
               <v-icon>business</v-icon>
             </v-list-tile-action>
@@ -234,6 +234,11 @@ var app1 = new Vue({
   },
   created: function (){
     this.currentRoute = '/menu';
+  },
+  methods: {
+    go_to: function(path){
+      this.currentRoute = path;
+    }
   },
   computed: {
     category: function(){
