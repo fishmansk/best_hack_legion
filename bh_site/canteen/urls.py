@@ -8,7 +8,7 @@ urlpatterns = [
     path('get_canteens/', GET_Canteens_View),
     path('get_categories/', GET_Categories_View),
     path('get_dishes/', GET_Dishes_View),
-    path('post_dishes/', POST_Category_View),
+    path('post_categories/', POST_Category_View),
     path('patch_categories/', PATCH_Category_View),
     path('delete_categories/', DELETE_Category_View),
     path('post_dish/', POST_Dish_View),

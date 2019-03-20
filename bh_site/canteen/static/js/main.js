@@ -242,6 +242,8 @@ Vue.component('add-category-dialog', {
     }
 })
 
+
+
 Vue.component('category-block', {
     props: ['name', "image_url", "id", "canteen_id", "delete_handler", "update_handler"],
     data: () => {
@@ -288,6 +290,56 @@ Vue.component('category-block', {
     `,
 
 })
+
+
+Vue.component('product-block', {
+    props: ['name', "image_url", "id", "canteen_id", "delete_handler", "category_info", "update_handler"],
+    data: () => {
+        return {
+
+        }
+    },
+    methods: {
+
+    },
+
+    template: `
+    <v-flex xs12 sm6 md4 pt-1 pl-1 pb-1 pr-1>
+    
+        <v-card>
+            <v-img class="white--text" height="200px" :src="image_url">
+                <v-container fill-height fluid>
+                    <v-layout fill-height fill-width row wrap>
+                        <v-flex xs8 md10 align-end flexbox>
+                            <span class="headline" style="text-shadow: 1px 1px #000;"> {{ name }}</span>
+                        </v-flex>
+                        <v-flex xs4 md2 flexbox>
+                            <v-layout row justify-end>
+                                <add-category-dialog 
+                                rest_url="http://127.0.0.1:8000/add_category/"
+                                dialog_title="Изменить категорию"
+                                rest_method="PATCH"
+                                :new="false"
+                                :id="id"
+                                :canteen_id="canteen_id"
+                                v-on:on_delete_category="delete_handler($event)"
+                                v-on:on_update_category="update_handler($event)"
+                                >
+                                </add-category-dialog>
+                            </v-layout>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-img>
+
+
+        </v-card>
+    </v-flex>
+    `,
+
+})
+
+
 
 var app = new Vue({
     el: "#app",
@@ -344,35 +396,15 @@ var app = new Vue({
             </v-layout>
             <br> 
 
-            <!-- 
+            
              <hr>
             <div class="display-2">Блюда:</div>
             <br>
             <v-layout row wrap justify-start>
-                <v-flex xs6 sm4 md3>
-                    <v-card>
-                        <v-img class="white--text" height="200px" src="images/soup.jpg">
-                            <v-container fill-height fluid>
-                                <v-layout fill-height fill-width row wrap>
-                                    <v-flex xs8 md10 align-end flexbox>
-                                        <div class="headline" style="text-shadow: 1px 1px #000;">Борщ</div>
-                                        <div class="caption" style="text-shadow: 1px 1px #000;">Категория: Супы</div>
-                                    </v-flex>
-                                    <v-flex xs4 md2 flexbox>
-                                        <v-layout row justify-end>
-                                            <v-btn fab dark small color="orange">
-                                                <v-icon orange>edit</v-icon>
-
-                                            </v-btn>
-                                        </v-layout>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
-                        </v-img>
-
-
-                    </v-card>
-                </v-flex> -->
+                <product-block
+                    name="Борщ"
+                ></product-block>
+                
 
 
 
