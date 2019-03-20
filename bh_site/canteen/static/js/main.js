@@ -69,7 +69,7 @@ Vue.component('bh-image-uploader', {
 
 
 Vue.component('add-category-dialog', {
-    props: ["rest_url", "rest_method", "dialog_title", "new", "id"],
+    props: ["rest_url", "rest_method", "dialog_title", "new", "id", "canteen_id"],
     template: `
     <div>
    
@@ -82,7 +82,7 @@ Vue.component('add-category-dialog', {
         <v-icon orange>edit</v-icon>
 
     </v-btn>
-    <v-dialog v-model="is_add_new_category_dialog" max-width="500px" fullscreen attach="#app-container">
+    <v-dialog v-model="is_add_new_category_dialog" max-width="500px" attach="#app-container">
         <v-card>
             <v-card-title>
                 <div class="display-1"> {{ dialog_title }}</div>
@@ -140,13 +140,37 @@ Vue.component('add-category-dialog', {
             this.$refs.image_upload_field.imageUrl = "";
         },
         add_new_category: function(){
-            data = {
-                image_name: this.$refs.image_upload_field.imageName,
-                image_base64: this.$refs.image_upload_field.imageUrl,
-                category_name: this.category_name,
-                category_id: this.id,
+            
+            if (this.new){
+                data = {
+                    image_name: this.$refs.image_upload_field.imageName,
+                    image: this.$refs.image_upload_field.imageUrl,
+                    name: this.category_name,
+                    canteen: this.canteen_id,
+                }
+                body = JSON.stringify(data)
+                var self = this
+                fetch('http://127.0.0.1:8000/post_categories/', {
+                    body:body,
+                    method: "POST",
+                }).then(function(response){
+                    
+                    return response.json()
+                }).then(function(json){
+
+                    if ((json.name) && (json.id)){
+                        self.close_add_category_dialog();
+                        self.$emit("on_new_category", json )
+                        
+                        // console.log("Hello")
+                        
+                    }
+                    // console.log(json)
+                })
             }
-            alert(this.id)
+            else{
+                alert(this.canteen_id)
+            }
             
 
         },
@@ -154,7 +178,7 @@ Vue.component('add-category-dialog', {
 })
 
 Vue.component('category-block', {
-    props: ['name', "image_url", "id"],
+    props: ['name', "image_url", "id", "canteen_id"],
     data: () => {
         return {
 
@@ -182,6 +206,7 @@ Vue.component('category-block', {
                                 rest_method="PATCH"
                                 :new="false"
                                 :id="id"
+                                :canteen_id="canteen_id"
                                 >
                                 </add-category-dialog>
                             </v-layout>
@@ -211,6 +236,8 @@ var app = new Vue({
                     dialog_title="Добавить категорию"
                     rest_method="POST"
                     :new="true"
+                    :canteen_id="canteen_id"
+                    v-on:on_new_category="add_new_category($event)"
                     >
                     </add-category-dialog>
 
@@ -232,6 +259,7 @@ var app = new Vue({
                     :name="category.name"
                     :image_url="'/media/' + category.image"
                     :id="category.id"
+                    :canteen_id="canteen_id"
                 >
 
                 </category-block>
@@ -292,13 +320,14 @@ var app = new Vue({
         base_url: "http://127.0.0.1:8000",
         categories: [
         ],
+        canteen_id: 1,
 
 
     },
     methods: {
         get_categories_from_server:  function(){
             send_data = JSON.stringify({
-                "canteen_id": "1"
+                "canteen_id": this.canteen_id.toString()
             })
             url = this.base_url + "/get_categories/"
             server_data = "123";
@@ -331,39 +360,8 @@ var app = new Vue({
             // console.log(server_data)
             
         },
-        add_new_category: async function(){
-            send_data = JSON.stringify({
-                "canteen_id": "1"
-            })
-            url = this.base_url + "/get_categories/"
-            server_data = "123";
-             fetch(url,
-            {
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                mode: "cors",
-                method: "POST",
-                body: send_data,
-            })
-            .then(function(res){ 
-                // alert(res.status)
-                // console.log(res);
-                return res.json();
-            } )
-            .then(
-                function (json){
-                    server_data = json.categories;
-                    
-                    app.categories = server_data;
-                    
-                    console.log(app.categories) 
-                    return json;
-                }
-                
-            ).catch(function(res){ console.log('ERROR'+res) })
-            // console.log(server_data)
+        add_new_category: function(data){
+            this.categories.push(data)
         }
     },
     computed: {

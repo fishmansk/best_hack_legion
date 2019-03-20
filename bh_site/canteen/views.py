@@ -100,10 +100,11 @@ def POST_Category_View(request):
         "image":'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAADZJREFUCJlj/P///38GPICFgYGBgZGREavk////IQpgRvhCGVvUEYYy4TMeYQWMh8GAWYHHnQAAhA802d3H5gAAAABJRU5ErkJggg==',
         "image_name": "keklol.png",
     }
+    print(request.body)
     data = request.body.decode()
     data = json.loads(data)
     Add_Category = data
-
+    # print(data)
     image = Add_Category["image"].split(',')[1]
     image_64_decode = base64.b64decode(image)
     media_root = settings.MEDIA_ROOT
