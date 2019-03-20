@@ -39,7 +39,7 @@ Vue.component('product', {
                     </v-flex>
                     <v-flex xs12 md6 class="mt-2 mb-1">
                       <v-btn block flat large v-on="on" color="orange" @click="bpm=0" style="background-color:rgba(255, 160, 0, 0.1)">
-                        <span>Подробнее</span>
+                        <span>В корзину</span>
                       </v-btn>
                     </v-flex>
 
