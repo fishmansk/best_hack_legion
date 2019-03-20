@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -15,21 +14,13 @@
 
     </body>
     <!-- Start - Подключение скриптов (библиотека VueTify и Script) --->
-    <script src="{% static 'js/config.js' %}"></script>
-    <script src="{% static 'js/backend.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
-    <script src="{% static 'js/vuex.js' %}"></script>
-    <script src="{% static 'js/menu-script.js' %}"></script>
-    <script src="{% static 'js/korzina-script.js' %}"></script>
-    <script src="{% static 'js/product-script.js' %}"></script>
-    <script src="{% static 'js/admin-script.js' %}"></script>
-
-
-    <script src="{% static 'js/main.js' %}"></script>
-    
-    
-    <!-- <script src="{% static 'js/config.js' %}"></script> -->
+    <script src="vuex.js"></script>
+    <script src="menu-script.js"></script>
+    <script src="korzina-script.js"></script>
+    <script src="product-script.js"></script>
+    <script src="main.js"></script>
     <!-- End - Подключение скриптов (библиотека VueTify и Script) --->
     <!-- Start стиль для hover -->
     <style>
@@ -42,13 +33,5 @@
         width: 100%;
       }
     </style>
-
-    
-    <!-- END стиль для hover -->
-    {% if user.is_authenticated %}
-    <script>
-      store.commit("set_manage", true);
-    </script>
-    {% endif %}
-    
+    <!-- Start стиль для hover -->
   </html>

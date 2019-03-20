@@ -166,7 +166,7 @@ def POST_Category_View(request):
     # image_result.write(image_64_decode)
     category.save()
     Add_Category['id']=category.pk
-    Add_Category['image']=str(category.image)
+    Add_Category['image']="/media/"+str(category.image)
     return JsonResponse(Add_Category)
 
 
@@ -212,7 +212,7 @@ def PATCH_Category_View(request):
 
     category.save()
 
-    Add_Category['image']=str(category.image)
+    Add_Category['image']="/media/"+str(category.image)
     return JsonResponse(Add_Category)
 
 @csrf_exempt

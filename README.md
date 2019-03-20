@@ -1,20 +1,21 @@
-# BEST HACK SUIT
+# BEST HACK SITE (Legion)
+###Team
+
+- Pavel Katskov
+- Kamol Rakhimov
+- Yakovlev Nikita
 
 ## Install
 
-1. Install Python 3.6+
+1. Start Ubuntu or other linux OS on your computer
+2. Copy `deploy.bash` into any folder
+3. Go to your folder and start terminal
+3. Run a command: `$bash delpoy.bash`
+4. Wait a few minutes and open your browser on `http://127.0.0.1:8901/`
 
-2. Install virutalenv and activate
-   
-    ```
-    $ pip install virtualenv
-    $ python -m venv vevn
-    $ source venv/bin/activate
-    (venv)$ | <-- this ok!    
-    ```
 
-3. Install django
+#Database 
 
-    3.1. `pip install django`
-    
-4. 
+Login: BHAdmin
+
+Password: besthack

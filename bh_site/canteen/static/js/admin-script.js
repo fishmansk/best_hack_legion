@@ -69,12 +69,12 @@ Vue.component('bh-image-uploader', {
 
 
 Vue.component('add-category-dialog', {
-    props: ["rest_url", "rest_method", "dialog_title", "new", "id", "canteen_id"],
+    props: ["rest_url", "rest_method", "dialog_title", "new", "id", "canteen_id", "disabled"],
     template: `
     <div>
    
     <div v-if="this.new">
-    <v-btn  fab dark color="indigo" @click="is_add_new_category_dialog = true">
+    <v-btn  fab dark color="indigo" @click="is_add_new_category_dialog = true" :disabled="disabled">
     
         <v-icon dark>add</v-icon>
     </v-btn>
@@ -304,6 +304,7 @@ Vue.component('product-block', {
     },
 
     template: `
+    
     <v-flex xs12 sm6 md4 pt-1 pl-1 pb-1 pr-1>
     
         <v-card>
@@ -345,6 +346,7 @@ Vue.component('product-block', {
                                 :new="false"
                                 :id="id"
                                 :canteen_id="canteen_id"
+                                
                                 v-on:on_delete_category="delete_handler($event)"
                                 v-on:on_update_category="update_handler($event)"
                                 >
@@ -383,7 +385,7 @@ Vue.component('product-block', {
 Vue.component('admin-app', {
     // el: "#app",
     template: `
-    <v-container id="app-container">
+    <v-container id="app-container" mt-5>
              <div class="display-3">Столовая 1</div>
             <hr>
             <div class="display-2">Категории:
@@ -415,7 +417,7 @@ Vue.component('admin-app', {
                 <category-block
                     v-for="category in categories"
                     :name="category.name"
-                    :image_url="'/media/' + category.image"
+                    :image_url="category.image"
                     :id="category.id"
                     :canteen_id="canteen_id"
                     :delete_handler="delete_category"
@@ -438,6 +440,15 @@ Vue.component('admin-app', {
             
              <hr>
             <div class="display-2">Блюда:</div>
+            <v-btn  fab dark color="indigo" disabled>    
+                <v-icon dark>add</v-icon>
+            </v-btn>
+            <v-alert
+                :value="true"
+                type="warning"
+            >
+                Добавление и редактирование блюд в разработке. Вы можете сделать это <a href="/admin">Здесь</a>
+            </v-alert>
             <br>
             <v-layout row wrap justify-start>
                 <product-block
@@ -455,32 +466,8 @@ Vue.component('admin-app', {
                 >
 
                 </product-block>
-                <!--
-                <product-block
-                    name="Борщ"
-                    image_url="/media/1_5sXeEEP.jpg"
-                ></product-block>
-
-                <product-block
-                    name="Борщ"
-                    image_url="/media/1_5sXeEEP.jpg"
-                ></product-block>
-
-                <product-block
-                    name="Борщ"
-                    image_url="/media/1_5sXeEEP.jpg"
-                ></product-block>
-
-                <product-block
-                    name="Борщ"
-                    image_url="/media/1_5sXeEEP.jpg"
-                ></product-block>
-
-                <product-block
-                    name="Борщ"
-                    image_url="/media/1_5sXeEEP.jpg"
-                ></product-block>-->
                 
+               
 
 
 
@@ -506,8 +493,8 @@ Vue.component('admin-app', {
         }
     },
     created: function(){
-        app.get_categories_from_server();
-        app.get_dishes_from_server();
+        this.get_categories_from_server();
+        this.get_dishes_from_server();
     },
     methods: {
         get_categories_from_server:  function(){
@@ -516,6 +503,7 @@ Vue.component('admin-app', {
             })
             url = this.base_url + "/get_categories/"
             server_data = "123";
+            var self = this;
              fetch(url,
             {
                 headers: {
@@ -535,9 +523,9 @@ Vue.component('admin-app', {
                 function (json){
                     server_data = json.categories;
                     
-                    app.categories = server_data;
+                    self.categories = server_data;
                     
-                    console.log(app.categories) 
+                    console.log(self.categories) 
                     return json;
                 }
                 
@@ -551,6 +539,7 @@ Vue.component('admin-app', {
             })
             url = this.base_url + "/get_all_dishes/"
             server_data = "123";
+            var self = this;
              fetch(url,
             {
                 headers: {
@@ -570,9 +559,9 @@ Vue.component('admin-app', {
                 function (json){
                     server_data = json.dishes;
                     
-                    app.dishes = server_data;
+                    self.dishes = server_data;
                     
-                    // console.log(app.categories) 
+                    // console.log(self.categories) 
                     return json;
                 }
                 
