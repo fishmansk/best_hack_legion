@@ -118,6 +118,7 @@ def POST_Category_View(request):
     # image_result.write(image_64_decode)
     category.save()
     Add_Category['id']=category.pk
+    Add_Category['image']=str(category.image)
     return JsonResponse(Add_Category)
 
 
@@ -163,6 +164,8 @@ def PATCH_Category_View(request):
     category.image = filename
 
     category.save()
+
+    Add_Category['image']=category.image
     return JsonResponse(Add_Category)
 
 @csrf_exempt
@@ -242,6 +245,7 @@ def POST_Dish_View(request):
     # image_result.write(image_64_decode)
     Dish.save()
     Add_Dish['id']=Dish.pk
+    Add_Dish['image']=str(Dish.image)
     return JsonResponse(Add_Dish)
 
 
@@ -292,6 +296,7 @@ def PATCH_Dish_View(request):
 
     # image_result.write(image_64_decode)
     Dish.save()
+    Add_Dish['image']=str(Dish.image)
     return JsonResponse(Add_Dish)
 
 @csrf_exempt
@@ -308,4 +313,8 @@ def DELETE_Dish_View(request):
 def index_view(request):
     html = render(request, "canteen/index.html", {})
     print(html.content)
+    return HttpResponse(html)
+
+def test_template(request):
+    html = render(request, "canteen/product.html", {})
     return HttpResponse(html)
