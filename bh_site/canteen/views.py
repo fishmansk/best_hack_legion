@@ -148,7 +148,7 @@ def PATCH_Category_View(request):
     data = request.body.decode()
     data = json.loads(data)
     Add_Category = data
-
+    print(data)
     image = Add_Category["image"].split(',')[1]
     image_64_decode = base64.b64decode(image)
     media_root = settings.MEDIA_ROOT
@@ -165,7 +165,8 @@ def PATCH_Category_View(request):
 
     category.save()
 
-    Add_Category['image']=category.image
+    Add_Category['image']=str(category.image)
+    # print(Add_Category)
     return JsonResponse(Add_Category)
 
 @csrf_exempt

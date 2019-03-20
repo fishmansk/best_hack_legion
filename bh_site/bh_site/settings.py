@@ -131,3 +131,6 @@ _PATH = os.path.dirname(os.path.dirname(__file__))
 
 MEDIA_ROOT = os.path.join(_PATH, "media")
 MEDIA_URL = '/media/'
+
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400

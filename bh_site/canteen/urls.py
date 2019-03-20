@@ -9,7 +9,7 @@ urlpatterns = [
     path('test4/', GET_Dishes_View),
     path('post_categories/', POST_Category_View),
     path('patch_categories/', PATCH_Category_View),
-    path('test7/', DELETE_Category_View),
+    path('delete_categories/', DELETE_Category_View),
     path('test8/', POST_Dish_View),
     path('test9/', PATCH_Dish_View),
     path('test10/', DELETE_Dish_View),

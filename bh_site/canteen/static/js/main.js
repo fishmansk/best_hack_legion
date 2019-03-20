@@ -75,6 +75,7 @@ Vue.component('add-category-dialog', {
    
     <div v-if="this.new">
     <v-btn  fab dark color="indigo" @click="is_add_new_category_dialog = true">
+    
         <v-icon dark>add</v-icon>
     </v-btn>
     </div>
@@ -83,10 +84,11 @@ Vue.component('add-category-dialog', {
 
     </v-btn>
     <v-dialog v-model="is_add_new_category_dialog" max-width="500px" attach="#app-container">
+        
         <v-card>
             <v-card-title>
                 <div class="display-1"> {{ dialog_title }}</div>
-
+                <v-btn v-if="!this.new" color="red" flat @click="delete_category()">Удалить</v-btn>
             </v-card-title>
             <v-card-text>
                 <v-layout column wrap>
@@ -104,7 +106,9 @@ Vue.component('add-category-dialog', {
                     <v-flex align-self-start>
                         <v-btn color="primary" flat @click="close_add_category_dialog">Закрыть</v-btn>
                     </v-flex>
+                    
                     <v-flex align-self-end offset-md5 offset-xs0>
+                    
                         <v-btn color="green" @click="add_new_category()">
                         <div v-if="this.new">
                         Добавить                        
@@ -139,8 +143,44 @@ Vue.component('add-category-dialog', {
             this.$refs.image_upload_field.imageFile = "";
             this.$refs.image_upload_field.imageUrl = "";
         },
+        // update_category: function(){
+        //     var self = this;
+        //     etch("http://127.0.0.1:8000/patch_categories/", {
+        //         method: "DELETE",
+        //         body: JSON.stringify({
+        //             id: this.id,
+        //         })
+        //     }).then(function (r){               
+
+        //         return r.json()
+        //     }).then(function(json){
+        //         if (r.status == 200){
+        //             self.$emit("on_update_category", json)
+        //             self.close_add_category_dialog();
+        //         }
+        //     })
+        // },
+        delete_category: function (){
+            // alert(this.id)
+            var self = this;
+            fetch("http://127.0.0.1:8000/delete_categories/", {
+                method: "DELETE",
+                body: JSON.stringify({
+                    id: this.id,
+                })
+            }).then(function (r){
+                if (r.status == 200){
+                    self.$emit("on_delete_category", {id:self.id})
+                    self.close_add_category_dialog();
+                }
+
+                return r.json()
+            }).then(function(json){
+
+            })
+        },
         add_new_category: function(){
-            
+            var self = this;
             if (this.new){
                 data = {
                     image_name: this.$refs.image_upload_field.imageName,
@@ -169,7 +209,32 @@ Vue.component('add-category-dialog', {
                 })
             }
             else{
-                alert(this.canteen_id)
+                data = {
+                    image_name: this.$refs.image_upload_field.imageName,
+                    image: this.$refs.image_upload_field.imageUrl,
+                    name: this.category_name,
+                    canteen: this.canteen_id,
+                    id: self.id,
+                }
+                body = JSON.stringify(data)
+                var self = this
+                fetch('http://127.0.0.1:8000/patch_categories/', {
+                    body:body,
+                    method: "POST",
+                }).then(function(response){
+                    
+                    return response.json()
+                }).then(function(json){
+
+                    if ((json.name) && (json.id)){
+                        self.close_add_category_dialog();
+                        self.$emit("on_update_category", json)
+                        
+                        // console.log("Hello")
+                        
+                    }
+                    // console.log(json)
+                })
             }
             
 
@@ -178,7 +243,7 @@ Vue.component('add-category-dialog', {
 })
 
 Vue.component('category-block', {
-    props: ['name', "image_url", "id", "canteen_id"],
+    props: ['name', "image_url", "id", "canteen_id", "delete_handler", "update_handler"],
     data: () => {
         return {
 
@@ -207,6 +272,8 @@ Vue.component('category-block', {
                                 :new="false"
                                 :id="id"
                                 :canteen_id="canteen_id"
+                                v-on:on_delete_category="delete_handler($event)"
+                                v-on:on_update_category="update_handler($event)"
                                 >
                                 </add-category-dialog>
                             </v-layout>
@@ -260,6 +327,8 @@ var app = new Vue({
                     :image_url="'/media/' + category.image"
                     :id="category.id"
                     :canteen_id="canteen_id"
+                    :delete_handler="delete_category"
+                    :update_handler="update_category"
                 >
 
                 </category-block>
@@ -362,7 +431,40 @@ var app = new Vue({
         },
         add_new_category: function(data){
             this.categories.push(data)
-        }
+        },
+        delete_category: function(data){
+            // alert("DELETE")
+            console.log(data)
+            var id = data.id;
+            for (var i = 0; i < this.categories.length; i++){
+                if (this.categories[i].id == id){
+                    this.categories.splice(i, 1);
+                    break;
+                }
+            }
+        },
+        update_category: function (data){
+            var id = -1;
+            // alert(1)
+            for (var i = 0; i < this.categories.length; i++){
+                if (this.categories[i].id == data.id){
+                    id = i;
+                    break;
+                }
+            }
+            if (id < 0){
+                alert("ERROR UPDATE")
+            }
+            else{
+                this.categories[id].name = data.name;
+                this.categories[id].image = data.image;
+                // console.log(data)
+                // console.log(this.categories)
+                // this.categories[i] = data;
+                console.log(this.categories)
+            }
+        },
+        
     },
     computed: {
         
