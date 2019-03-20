@@ -43,6 +43,18 @@ Vue.component('main-app', {
     
     cart_size: function (){
       return this.$store.state.cart_items.length;
+    },
+    canteen_name: function(){
+      var id = this.$store.state.canteen_id;
+      // alert(id)
+      var name = "";
+      for (var i = 0; i < this.canteens.length; i++){
+        if (this.canteens[i].id == id){
+          name = this.canteens[i].name;
+          break;
+        }
+      }
+      return name;
     }
   },
   created: function(){
@@ -125,7 +137,7 @@ Vue.component('main-app', {
 
             <v-flex md10 xs6 align-self-center>
                 <span style="display: flex; justify-content: center; margin-right:30px;">
-                Столовая №1
+                {{ canteen_name }}
                 <a v-if="this.$store.state.is_manage" @click="go_to('/admin')" style="color:orange">&nbspуправление</a>
                  </span>
             </v-flex>
@@ -156,7 +168,7 @@ Vue.component('main-app', {
       <!-- <div id="main_app"></div> -->
       <!-- START - FOOTER -->
       <v-footer app fixed dark>
-        <span style="margin-left:20px">&copy; 2017</span>
+        <span style="margin-left:20px">&copy; 2019</span>
         <v-spacer></v-spacer>
         <v-btn flat @click="change_location('/admin/')">Войти в админ панель</v-btn>
       </v-footer>

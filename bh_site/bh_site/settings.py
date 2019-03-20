@@ -25,7 +25,7 @@ SECRET_KEY = 'g$8ji9^v26hedetiafbsc6*6%9m&&(xhj!s-#f+r6mi(2@tu(-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'studkb.ru', 'besthack.studkb.ru']
 
 
 # Application definition
