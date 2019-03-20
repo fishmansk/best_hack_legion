@@ -120,7 +120,7 @@ def GET_Categories_View(request):
         dishes = DishModel.objects.filter(category=category.pk)
         category_info.append({"id":category.id,
                             "name":category.name,
-                            "image":str(category.image),
+                            "image":"/media/"+str(category.image),
                             "num_dishes":len(dishes)})
 
     response = {"categories":category_info}
@@ -292,7 +292,75 @@ def GET_Dishes_View(request):
                             "price": dish.price,
                             "mass": dish.mass,
                             "description": dish.description,
-                            "image": str(dish.image),
+                            "image": "/media/"+str(dish.image),
+                            })
+    response = {"dishes":dishes_info}
+    return JsonResponse(response)
+
+
+@csrf_exempt
+def GET_all_Dishes_View(request):
+    '''
+    Получение информации о блюдах в категории "category_id"
+    :param request:
+    {
+        "category_id":14
+    }
+    :return:
+    {
+    "dishes": [
+        {
+            "id": 18,
+            "name": "Корзиночка с маком",
+            "calories": 90,
+            "proteins": 30,
+            "fats": 20,
+            "carbohydrates": 50,
+            "price": 40,
+            "mass": 100,
+            "description": "Самая вкусная корзиночка с маком.",
+            "image": "корзиночка_с_маком.jpg"
+        },
+        {
+            "id": 19,
+            "name": "Бисквитное пироженое",
+            "calories": 150,
+            "proteins": 20,
+            "fats": 20,
+            "carbohydrates": 60,
+            "price": 40,
+            "mass": 100,
+            "description": "Самое вкусное бисквитное пирожное в этой столовой",
+            "image": "бисквитное_пирожное.jpg"
+        }
+    ]
+}
+    '''
+    data = request.body.decode()
+    data = json.loads(data)
+    canteen_id = data["canteen_id"]
+    categories = CategoryModel.objects.filter(canteen_id=canteen_id)
+    dishes = []
+    for category in categories:
+        ds = DishModel.objects.filter(category_id=category.pk)
+        # for i in ds:
+        #     ds["category_name"] = category.name
+        dishes += ds
+    # dishes = DishModel.objects.all()
+    dishes_info = []
+    print(dishes)
+    for dish in dishes:
+        dishes_info.append({"id": dish.id,
+                            "name": dish.name,
+                            "calories": dish.calories,
+                            "proteins": dish.proteins,
+                            "fats": dish.fats,
+                            "carbohydrates": dish.carbohydrates,
+                            "price": dish.price,
+                            "mass": dish.mass,
+                            "description": dish.description,
+                            "image": "/media/"+str(dish.image),
+                            "category_name": str(CategoryModel.objects.get(pk=dish.category_id).name)
                             })
     response = {"dishes":dishes_info}
     return JsonResponse(response)

@@ -12,7 +12,7 @@ const NotFound = {
    template: '<p>страница не найдена!</p>'
 }
 const Product = {
-   template: `  <main-app ><product-app></product-app></main-app>
+   template: `  <main-app ref="main_app"><product-app></product-app></main-app>
 
 `
 }
@@ -23,38 +23,17 @@ const Korzina = {
 }
 
 var BH_cart_items = [];
-var global = this;
 Vue.component('main-app', {
   data: function(){
     return {
         drawer: false,
         cart_items: [],
-        canteens: [
-          // {
-          //   "id": "1",
-          //   "name": "Canteen 1",
-          //   "description": "description",
-          // }
-        ],
-        
     }
   },
   computed: {
-    
     cart_size: function (){
       return this.$store.state.cart_items.length;
     }
-  },
-  created: function(){
-    var self = this;
-    canteens_load_handler = function(data){
-      console.log(data)
-      // for (i in data){
-        // self.canteens.push(data[0])
-      // }
-      self.canteens = data
-    }
-    get_canteens(canteens_load_handler)
   },
   methods: {
     show_snackbar: function(info){
@@ -76,13 +55,6 @@ Vue.component('main-app', {
     },
     go_to: function(path){
       app1.currentRoute = path
-    },
-    change_location: function(path){
-        location.pathname = path
-    },
-    change_canteen_id: function(id){
-      this.$store.commit('set_canteen_id', id)
-      console.log(this.$store.state.canteen_id)
     }
   },
   template: `
@@ -95,17 +67,33 @@ Vue.component('main-app', {
         </div>
         <v-divider></v-divider>
         <div class="" style="height:20px"></div>
-        <div v-for="canteen in canteens">
-          <v-list-tile @click="change_canteen_id(canteen.id)">
-            <v-list-tile-action>
-              <v-icon>business</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title> {{ canteen.name }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </div>
-        
+
+        <v-list-tile @click="" style="background-color:rgba(0, 255, 0, 0.2);">
+          <v-list-tile-action>
+            <v-icon>business</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Столовая №1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span>Открыта</span></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile @click="" style="background-color:rgba(255, 0, 0, 0.2)">
+          <v-list-tile-action>
+            <v-icon>business</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Столовая №2&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span>Закрыта</span></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile @click="">
+          <v-list-tile-action>
+            <v-icon>business</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Столовая №3</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
       </v-list>
       <!-- END - список столовых -->
@@ -122,10 +110,7 @@ Vue.component('main-app', {
             </v-flex>
 
             <v-flex md10 xs6 align-self-center>
-                <span style="display: flex; justify-content: center; margin-right:30px;">
-                Столовая №1
-                <a v-if="this.$store.state.is_manage" @click="go_to('/admin')" style="color:orange">&nbspуправление</a>
-                 </span>
+                <span style="display: flex; justify-content: center; margin-right:30px;">Столовая №1<a @click="go_to('/admin')" style="color:orange">&nbspуправление</a> </span>
             </v-flex>
 
             <!-- START - иконка корзины и количество товаров  -->
@@ -156,7 +141,7 @@ Vue.component('main-app', {
       <v-footer app fixed dark>
         <span style="margin-left:20px">&copy; 2017</span>
         <v-spacer></v-spacer>
-        <v-btn flat @click="change_location('/admin/')">Войти в админ панель</v-btn>
+        <v-btn flat>Войти в админ панель</v-btn>
       </v-footer>
       <!-- END - FOOTER -->
 
@@ -184,9 +169,6 @@ var store = new Vuex.Store({
   state: {
     cart_items: [],
     cart_item_index: 0,
-    is_manage: false,
-    canteen_id: 1,
-    category_id: 1,
   },
   getters: {
     get_new_id: state => {
@@ -207,18 +189,7 @@ var store = new Vuex.Store({
 
           state.cart_items.push(item);
       }
-    },
-    set_manage: function(state, data){
-        state.is_manage = data;
-    },
-    set_canteen_id: function(state, value){
-      state.canteen_id = value;
-    },
-    
-    set_category_id: function(state, value){
-      state.category_id = value;
-    },
-    
+    }
 
   },
 })

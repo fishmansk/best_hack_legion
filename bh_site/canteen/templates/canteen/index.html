@@ -1,30 +1,51 @@
 {% load static %}
 <!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Menu</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  </head>
+  <body>
 
-<html lang="en" style="height: 100%">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="{% static 'css/vuetify.min.css' %}">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
-</head>
-<body>
-    <div id="app">
-        
-       
+  <div id="app"></div>
 
+    </body>
+    <!-- Start - Подключение скриптов (библиотека VueTify и Script) --->
+    <script src="{% static 'js/config.js' %}"></script>
+    <script src="{% static 'js/backend.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="{% static 'js/vuex.js' %}"></script>
+    <script src="{% static 'js/menu-script.js' %}"></script>
+    <script src="{% static 'js/korzina-script.js' %}"></script>
+    <script src="{% static 'js/product-script.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/admin-script.js' %}"></script>
+    
+    <!-- <script src="{% static 'js/config.js' %}"></script> -->
+    <!-- End - Подключение скриптов (библиотека VueTify и Script) --->
+    <!-- Start стиль для hover -->
+    <style>
+      .v-card--reveal {
+        align-items: center;
+        bottom: 0;
+        justify-content: center;
+        opacity: .5;
+        position: absolute;
+        width: 100%;
+      }
+    </style>
 
-
-
-
-    </div>
-
-</body>
-
-<script src="{% static 'js/vue.js' %}"></script>
-<script src="{% static 'js/vuetify.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
-<script>
-    app.get_categories_from_server();
-</script>
-</html>
+    
+    <!-- END стиль для hover -->
+    {% if user.is_authenticated %}
+    <script>
+      store.commit("set_manage", true);
+    </script>
+    {% endif %}
+    
+  </html>

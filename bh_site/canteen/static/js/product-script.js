@@ -274,16 +274,16 @@ Vue.component('product-app', {
                 <v-flex xs12 md6 v-for="item in product">
                     <!-- <template> -->
                       <product
-                      :image_url_of_prod="item.image_url_of_prod"
-                      :title_of_prod="  item.title_of_prod"
-                      :valuerating_of_prod="item.valuerating_of_prod"
-                      :reviews_of_prod="item.reviews_of_prod"
-                      :price_of_product="item.price_of_product"
-                      weight="test"
-                      calorie="test"
-                      fats="test"
-                      squirrels="test"
-                      carbohydrates="test"
+                      :image_url_of_prod="item.image"
+                      :title_of_prod="  item.name"
+                      valuerating_of_prod="3"
+                      reviews_of_prod="4"
+                      :price_of_product="item.price"
+                      :weight="item.mass"
+                      :calorie="item.calories"
+                      :fats="item.fats"
+                      :squirrels="item.proteins"
+                      :carbohydrates="item.carbohydrates"
                       v-on:on_add_dish_to_cart="add_dish_to_cart($event)"
                       v-on:on_show_snackbar="show_snackbar($event)"
                       ></product>
@@ -360,8 +360,33 @@ Vue.component('product-app', {
     cart_size: function (){
       return BH_cart_items.length;
       alert(BH_cart_items.length)
+    },
+    cart_items_list: async function (){
+      var self = this;
+      var products = [];
+      products_load_handler = function(data){
+        // console.log(data)
+        // for (i in data){
+          // self.canteens.push(data[0])
+        // }
+        products = data
+        console.log(data)
+      }
+      // alert(self.$store.state.canteen_id)
+      // alert(self.$store.state.category_id)
+      await get_category_dishes(self.$store.state.category_id, products_load_handler)
+      // console.log(products)
+      this.product = products;
+      return products;
     }
   },
+  watch: {
+    cart_items_list: function(data){
+      // console.log(data)
+      // this.category = data;
+    },
+  },
+
 
   props: {
     source: String
