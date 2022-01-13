@@ -5,7 +5,7 @@ django-guardian==1.5.0
 get==2018.11.19
 gunicorn==19.9.0
 idna==2.8
-Pillow==5.4.1
+Pillow==9.0.0
 post==2018.11.20
 public==2018.11.20
 pytz==2018.9
